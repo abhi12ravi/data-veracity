@@ -1,18 +1,24 @@
+import sys
+sys.path.append("..")
 
-
+from utils import config
 
 class User(object):
 
+    conf = config.UserConfig()
+
     def __init__(self, id):
         self._id = id
-        self._status_ids = set()
+        self._status_ids = list()
+
 
     @property
     def id(self):
         return self._id
 
     def add_status(self, id):
-        self._status_ids.add(id)
+        if id not in self._status_ids: # unique
+            self._status_ids.append(id)
 
     def remove_status(self, id):
         if id in self._status_ids:
@@ -22,12 +28,25 @@ class User(object):
         return self._status_ids.copy()
 
     def json(self):
-        jsonMap = {}
-        jsonMap["_id"] = self._id
-        jsonMap["statuses"] = self._status_ids
-        return jsonMap
+        if self._id is None:
+            return None # Inconsistent Object
+        json_map = dict()
+        json_map[self.conf.id] = self._id
+        json_map[self.conf.status_ids] = list(set(self._status_ids))
+        return json_map
 
+    @staticmethod
+    def get_user_from_db_object(obj):
+        user = User(obj[User.conf.id])
+        for status_id in obj[User.conf.status_ids]:
+            user.add_status(status_id)
+        return user
 
+    def __str__(self):
+        string = "User: "
+        string += "{} : {}, ".format(User.conf.id, self.id)
+        string += "{} : {} ".format(User.conf.status_ids, self._status_ids)
+        return string
 
 
 class Status(object):
