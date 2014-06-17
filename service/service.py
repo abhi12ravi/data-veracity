@@ -1,16 +1,17 @@
 import sys
-sys.path.append("..")
 
+sys.path.append("..")
 
 from dao import dao
 from entity import entity
+
+
 class UserService(object):
-
     def __init__(self):
-        self._dao  = dao.UserDao()
+        self._dao = dao.UserDao()
 
 
-    def create_user(self,user):
+    def create_user(self, user):
         if not isinstance(user, entity.User):
             raise TypeError("Must be of type user")
         pass

@@ -1,10 +1,11 @@
 import sys
+
 sys.path.append("..")
 
 from utils import config
 
-class User(object):
 
+class User(object):
     conf = config.UserConfig()
 
     def __init__(self, id):
@@ -17,7 +18,7 @@ class User(object):
         return self._id
 
     def add_status(self, id):
-        if id not in self._status_ids: # unique
+        if id not in self._status_ids:  # unique
             self._status_ids.append(id)
 
     def remove_status(self, id):
@@ -29,7 +30,7 @@ class User(object):
 
     def json(self):
         if self._id is None:
-            return None # Inconsistent Object
+            return None  # Inconsistent Object
         json_map = dict()
         json_map[self.conf.id] = self._id
         json_map[self.conf.status_ids] = list(set(self._status_ids))
@@ -50,8 +51,7 @@ class User(object):
 
 
 class Status(object):
-
-    def __init__(self,id):
+    def __init__(self, id):
         self._id = id
         self._tags = {}
         self._content = None
@@ -88,6 +88,7 @@ class Status(object):
 
     def update_tag(self, tag, value):
         self._tags[tag] = value
+
 
 if __name__ == "__main__":
     # Test Cases for User
