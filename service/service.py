@@ -4,7 +4,7 @@ sys.path.append("..")
 
 from dao import dao
 from entity import entity
-
+from utils import error
 
 class UserService(object):
     def __init__(self):
@@ -14,7 +14,10 @@ class UserService(object):
     def create_user(self, user):
         if not isinstance(user, entity.User):
             raise TypeError("Must be of type user")
-        pass
+        if self._dao.get(user.id) is None:
+            self._dao.put(user)
+        else:
+            raise error.UserAlreadyExists()
 
     def delete_user(self, user_id):
         pass

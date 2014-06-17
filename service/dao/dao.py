@@ -11,17 +11,11 @@ from entity.entity import Status
 class MongoConnection(object):
     @staticmethod
     def get_collection(collection_name):
-        configuration = config.Config()
-        username = configuration.get_property('MONGO_USERNAME')
-        password = configuration.get_property('MONGO_PASSWORD')
-        host = configuration.get_property('MONGO_HOST')
-        port = int(configuration.get_property('MONGO_PORT'))
-        db_name = configuration.get_property('MONGO_DB_NAME')
-
-        mongo_client = pymongo.MongoClient(host=host, port=port)
-        db = mongo_client[db_name]
-        if username is not None:
-            db.authenticate(username, password=password)
+        configuration = config.MongoConfig()
+        mongo_client = pymongo.MongoClient(host=configuration.host, port=configuration.port)
+        db = mongo_client[configuration.db_name]
+        if configuration.username is not None:
+            db.authenticate(configuration.username, password=configuration.password)
         return db[collection_name]
 
 
@@ -46,6 +40,9 @@ class UserDao(object):
         if json is not None:
             self._collection.update({User.conf.id: id}, json)
 
+    def remove(self, id):
+        self._collection.remove({User.conf.id: id})
+
     def get_cursor(self):
         cursor = self._collection.find()
         for user in cursor:
@@ -56,6 +53,7 @@ if __name__ == "__main__":
     user_dao = UserDao()
     user1 = User(1)
     user2 = User(2)
+    user_dao.remove(2)
 
     for user in user_dao.get_cursor():
         print user
