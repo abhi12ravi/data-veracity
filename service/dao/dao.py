@@ -38,7 +38,9 @@ class UserDao(object):
     def update(self, id, user):
         json = user.json()
         if json is not None:
-            self._collection.update({User.conf.id: id}, json)
+            self._collection.update({
+                                    User.conf.id: id
+                                    }, json)
 
     def remove(self, id):
         self._collection.remove({User.conf.id: id})
@@ -48,12 +50,28 @@ class UserDao(object):
         for user in cursor:
             yield User.get_user_from_db_object(user)
 
+    def add_status(self,user_id, status_id):
+        self._collection.update({
+                                User.conf.id: user_id
+                                },
+                                {
+                                '$addToSet':
+                                    {User.conf.status_ids: status_id}
+                                })
 
+    def remove_status(self, user_id, status_id):
+        self._collection.update({
+                                User.conf.id: user_id
+                                },
+                                {
+                                '$pull':
+                                    {User.conf.status_ids: status_id}
+                                })
 if __name__ == "__main__":
     user_dao = UserDao()
     user1 = User(1)
     user2 = User(2)
-    user_dao.remove(2)
-
+    user_dao.remove_status(1,2 )
     for user in user_dao.get_cursor():
         print user
+
