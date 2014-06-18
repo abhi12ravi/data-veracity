@@ -26,7 +26,7 @@ class User(object):
             self._status_ids.remove(id)
 
     def get_statuses(self):
-        return self._status_ids.copy()
+        return self._status_ids[:]
 
     def json(self):
         if self._id is None:
@@ -76,7 +76,6 @@ class Status(object):
     def content(self, value):
         self._content = value
 
-    @property
     def tag_count(self, tag):
         if tag in self._tags.keys():
             return self._tags[tag]
@@ -92,14 +91,28 @@ class Status(object):
     def update_tag(self, tag, value):
         self._tags[tag] = value
 
-
     def json(self):
-        pass # todo
+        if self.id is None or self.content is None:
+            return None
+        json = dict()
+        json[Status.conf.id] = self.id
+        json[Status.conf.content] = self.content
+        json[Status.conf.tags] = self._tags
+        return json
 
     @staticmethod
-    def get_status_from_db_object(self):
-        pass # todo
+    def get_status_from_db_object(self, obj):
+        status = Status(obj[Status.conf.id])
+        status.content = obj[Status.conf.content]
+        status._tags = obj[Status.conf.tags]
+        return status
 
+    def __str__(self):
+        string = "Status: "
+        string += "{}: {}, ".format(Status.conf.id, self.id)
+        string += "{}: {}, ".format(Status.conf.content, self.content)
+        string += "{}: {}".format(Status.conf.tags, ", ".join("{}-{}".format(tag, self._tags[tag]) for tag in self._tags.keys()))
+        return string
 
 if __name__ == "__main__":
     # Test Cases for User
@@ -112,7 +125,12 @@ if __name__ == "__main__":
     user.remove_status(1)
     assert 1 not in user.get_statuses()
 
+    # Test Cases for Status
     status = Status(52)
+    status.content = "Best of luck blah blah"
+    status.increment_tag('happy')
+    status.increment_tag('congratulatory')
+    print status
 
     assert status.id == 52
 
