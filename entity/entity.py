@@ -51,6 +51,9 @@ class User(object):
 
 
 class Status(object):
+
+    conf = config.StatusConfig()
+
     def __init__(self, id):
         self._id = id
         self._tags = {}
@@ -88,6 +91,14 @@ class Status(object):
 
     def update_tag(self, tag, value):
         self._tags[tag] = value
+
+
+    def json(self):
+        pass # todo
+
+    @staticmethod
+    def get_status_from_db_object(self):
+        pass # todo
 
 
 if __name__ == "__main__":

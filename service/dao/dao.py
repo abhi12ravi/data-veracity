@@ -67,6 +67,23 @@ class UserDao(object):
                                 '$pull':
                                     {User.conf.status_ids: status_id}
                                 })
+
+def StatusDao(object):
+
+    def __init__(self):
+        pass
+
+    def add_status(self, status):
+        pass
+
+    def delete_status(self):
+        pass
+
+    def update_status(self):
+        pass
+
+    
+
 if __name__ == "__main__":
     user_dao = UserDao()
     user1 = User(1)
