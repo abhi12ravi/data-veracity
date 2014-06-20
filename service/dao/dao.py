@@ -71,18 +71,26 @@ class UserDao(object):
 def StatusDao(object):
 
     def __init__(self):
-        pass
+        self._collection = MongoConnection.get_collection(Status.conf.collection_name)
 
-    def add_status(self, status):
-        pass
 
+    def put(self, status):
+        json = status.json()
+        if json is not None:
+            self._collection.insert(status)
+
+    def get(self, status_id):
+        status_db_object = self._collection.find_one({Status.conf.id : status_id})
+        if status_db_object is not None:
+            return Status.get_status_from_db_object(status_db_object)
+        else:
+            return None
     def delete_status(self):
         pass
 
     def update_status(self):
         pass
 
-    
 
 if __name__ == "__main__":
     user_dao = UserDao()
