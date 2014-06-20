@@ -35,11 +35,11 @@ class UserDao(object):
         if json is not None:
             self._collection.insert(json)
 
-    def update(self, id, user):
+    def update(self, user):
         json = user.json()
         if json is not None:
             self._collection.update({
-                                    User.conf.id: id
+                                    User.conf.id: user.id
                                     }, json)
 
     def remove(self, id):
@@ -68,7 +68,9 @@ class UserDao(object):
                                     {User.conf.status_ids: status_id}
                                 })
 
-def StatusDao(object):
+
+
+class StatusDao(object):
 
     def __init__(self):
         self._collection = MongoConnection.get_collection(Status.conf.collection_name)
@@ -77,7 +79,7 @@ def StatusDao(object):
     def put(self, status):
         json = status.json()
         if json is not None:
-            self._collection.insert(status)
+            self._collection.insert(json)
 
     def get(self, status_id):
         status_db_object = self._collection.find_one({Status.conf.id : status_id})
@@ -89,23 +91,35 @@ def StatusDao(object):
     def remove(self, status_id):
         self._collection.remove({Status.conf.id:status_id})
 
-    def update(self):
-        pass
-
     def get_cursor(self):
         cursor = self._collection.find()
         for object in cursor:
             yield Status.get_status_from_db_object(object)
 
-    def add_tag(self, status_id, tag, tag_count):
-        pass
+    def set_tag(self, status_id, tag, tag_count):
+        self._collection.update({
+                                    Status.conf.id: status_id
+                                },
+                                {
+                                    "$set" : { "{}.{}".format(Status.conf.tags,tag) : tag_count }
+                                }
+        )
 
     def remove_tag(self, status_id, tag):
-        pass
+        self._collection.update({
+                                    Status.conf.id : status_id
+                                },
+                                {
+                                    "$unset" : {"{}.{}".format(Status.conf.tags,tag):1}
+                                }
+        )
 
-    def update_tag_count(self, status_id, tag,tag_count):
-        pass
-
+    def update(self, status):
+        json = status.json()
+        if json is not None:
+            self._collection.update({
+                Status.conf.id : status.id
+            }, json)
 
 
 if __name__ == "__main__":
@@ -116,3 +130,11 @@ if __name__ == "__main__":
     for user in user_dao.get_cursor():
         print user
 
+    status_dao = StatusDao()
+    status1 = Status(232)
+    status1.content = "This is a sample status"
+    status1.update_tag("happy", 232)
+    status1.update_tag("blah", 12)
+    #status_dao.put(status1)
+    status_dao.set_tag(232, 'freaky', 2323)
+    #status_dao.remove_tag(232, 'mum')
