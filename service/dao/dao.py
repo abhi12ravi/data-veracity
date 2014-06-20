@@ -85,11 +85,27 @@ def StatusDao(object):
             return Status.get_status_from_db_object(status_db_object)
         else:
             return None
-    def delete_status(self):
+
+    def remove(self, status_id):
+        self._collection.remove({Status.conf.id:status_id})
+
+    def update(self):
         pass
 
-    def update_status(self):
+    def get_cursor(self):
+        cursor = self._collection.find()
+        for object in cursor:
+            yield Status.get_status_from_db_object(object)
+
+    def add_tag(self, status_id, tag, tag_count):
         pass
+
+    def remove_tag(self, status_id, tag):
+        pass
+
+    def update_tag_count(self, status_id, tag,tag_count):
+        pass
+
 
 
 if __name__ == "__main__":
