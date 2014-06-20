@@ -14,7 +14,7 @@ class UserService(object):
     @staticmethod
     def _check_user(user):
         if not isinstance(user, entity.User):
-            raise TypeError("Must be of type user")
+            raise TypeError("Must be of type User")
 
     def create_user(self, user):
         UserService._check_user(user)
@@ -28,14 +28,25 @@ class UserService(object):
 
     def update_user(self, user_id, user):
         UserService._check_user(user)
-        self._dao.update(user_id,user)
+        self._dao.update(user)
 
     def get_all_users(self):
         return self._dao.get_cursor()
 
     def add_status_to_user(self, user_id, status_id):
-        user = self._dao.get(user_id)
+        user = self._dao.get(user_id) # todo
 
+
+
+class StatusService(object):
+
+    def __init__(self):
+        self._dao = dao.StatusDao()
+
+    @staticmethod
+    def type_check(status):
+        if not isinstance(status, entity.Status):
+            raise TypeError("Must by of type Status")
 
 if __name__ == "__main__":
     service = UserService()

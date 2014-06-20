@@ -138,3 +138,5 @@ if __name__ == "__main__":
     #status_dao.put(status1)
     status_dao.set_tag(232, 'freaky', 2323)
     #status_dao.remove_tag(232, 'mum')
+    status1.content = "This content is now changed"
+    status_dao.update(status1)
