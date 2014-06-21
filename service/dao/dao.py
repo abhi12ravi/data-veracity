@@ -69,7 +69,6 @@ class UserDao(object):
                                 })
 
 
-
 class StatusDao(object):
 
     def __init__(self):
@@ -91,10 +90,6 @@ class StatusDao(object):
     def remove(self, status_id):
         self._collection.remove({Status.conf.id:status_id})
 
-    def get_cursor(self):
-        cursor = self._collection.find()
-        for object in cursor:
-            yield Status.get_status_from_db_object(object)
 
     def set_tag(self, status_id, tag, tag_count):
         self._collection.update({
@@ -120,6 +115,12 @@ class StatusDao(object):
             self._collection.update({
                 Status.conf.id : status.id
             }, json)
+
+
+    def get_cursor(self):
+        cursor = self._collection.find()
+        for object in cursor:
+            yield Status.get_status_from_db_object(object)
 
 
 if __name__ == "__main__":

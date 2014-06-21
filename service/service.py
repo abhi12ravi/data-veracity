@@ -12,12 +12,12 @@ class UserService(object):
         self._dao = dao.UserDao()
 
     @staticmethod
-    def _check_user(user):
+    def type_check(user):
         if not isinstance(user, entity.User):
             raise TypeError("Must be of type User")
 
     def create_user(self, user):
-        UserService._check_user(user)
+        UserService.type_check(user)
         if self._dao.get(user.id) is None:
             self._dao.put(user)
         else:
@@ -27,7 +27,7 @@ class UserService(object):
         self._dao.remove(user_id)
 
     def update_user(self, user_id, user):
-        UserService._check_user(user)
+        UserService.type_check(user)
         self._dao.update(user)
 
     def get_all_users(self):
