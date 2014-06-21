@@ -48,5 +48,17 @@ class StatusService(object):
         if not isinstance(status, entity.Status):
             raise TypeError("Must by of type Status")
 
+
+    def add_status(self, status):
+        StatusService.type_check(status)
+        # todo
+
+    def remove_status(self, status_id):
+        pass # todo
+
+    def tag_status(self, tag_list):
+        pass # todo
+
+
 if __name__ == "__main__":
     service = UserService()
