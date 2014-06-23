@@ -7,3 +7,6 @@ class GenericError(Exception):
 class UserAlreadyExists(GenericError):
     pass
 
+
+class StatusDoesNotExist(GenericError):
+    pass

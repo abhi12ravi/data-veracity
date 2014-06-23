@@ -113,8 +113,8 @@ class StatusDao(object):
         json = status.json()
         if json is not None:
             self._collection.update({
-                Status.conf.id : status.id
-            }, json)
+                                        Status.conf.id : status.id
+                                    }, json)
 
 
     def get_cursor(self):

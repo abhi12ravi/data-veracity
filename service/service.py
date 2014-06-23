@@ -34,8 +34,7 @@ class UserService(object):
         return self._dao.get_cursor()
 
     def add_status_to_user(self, user_id, status_id):
-        user = self._dao.get(user_id) # todo
-
+        self._dao.add_status(user_id, status_id)
 
 
 class StatusService(object):
@@ -51,13 +50,20 @@ class StatusService(object):
 
     def add_status(self, status):
         StatusService.type_check(status)
-        # todo
+        self._dao.put(status)
+
 
     def remove_status(self, status_id):
-        pass # todo
+        self._dao.remove(status_id)
 
-    def tag_status(self, tag_list):
-        pass # todo
+    def tag_status(self, status_id ,tag_list):
+        if tag_list is not None and len(tag_list) > 0:
+            status = self._dao.get(status_id)
+            if status is None:
+                raise error.StatusDoesNotExist()
+            for tag in tag_list:
+                status.increment_tag(tag)
+            self._dao.update(status)
 
 
 if __name__ == "__main__":
