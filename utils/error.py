@@ -5,8 +5,11 @@ class GenericError(Exception):
     pass
 
 class UserAlreadyExists(GenericError):
-    pass
 
+    msg = "User Already Exists"
+
+    def __str__(self):
+        return self.msg
 
 class StatusDoesNotExist(GenericError):
     pass
