@@ -2,14 +2,14 @@
 
 
 class GenericError(Exception):
-    pass
-
-class UserAlreadyExists(GenericError):
-
-    msg = "User Already Exists"
+    msg = "Generic Error"
 
     def __str__(self):
-        return self.msg
+        return "Exception: {}, Message:{}".format(self.__class__.__name__, self.msg)
+
+class UserAlreadyExists(GenericError):
+    msg = "User Already Exists"
+
 
 class StatusDoesNotExist(GenericError):
-    pass
+    msg = "Status Does not Exist"
