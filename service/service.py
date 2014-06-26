@@ -36,6 +36,10 @@ class UserService(object):
     def add_status_to_user(self, user_id, status_id):
         self._dao.add_status(user_id, status_id)
 
+    def statistics(self):
+        stats = {}
+        stats['count'] = len(self._dao.get_cursor())
+        return stats
 
 class StatusService(object):
 
@@ -65,6 +69,11 @@ class StatusService(object):
                 status.increment_tag(tag)
             self._dao.update(status)
 
+
+    def statistics(self):
+        stats = {}
+        stats['count'] = len(self._dao.get_cursor())
+        return stats
 
 if __name__ == "__main__":
     service = UserService()
