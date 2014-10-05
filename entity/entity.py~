@@ -76,13 +76,13 @@ class Status(object):
     def content(self, value):
         self._content = value
 
-    def tag_count(self, tag):
+    def tag_count(self, tag):#display in UI
         if tag in self._tags.keys():
             return self._tags[tag]
         else:
             return 0
 
-    def increment_tag(self, tag):#display in UI
+    def increment_tag(self, tag):
         if tag in self._tags.keys():
             self._tags[tag] += 1
         else:

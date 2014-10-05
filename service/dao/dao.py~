@@ -1,5 +1,5 @@
 import sys
-#Data Access Object
+
 sys.path.append("../..")
 
 import pymongo

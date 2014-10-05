@@ -1,4 +1,4 @@
-#Put all errors here!
+
 
 
 class GenericError(Exception):

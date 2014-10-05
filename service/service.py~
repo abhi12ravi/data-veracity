@@ -61,8 +61,8 @@ class StatusService(object):
     def remove_status(self, status_id):
         self._dao.remove(status_id)
 
-    def tag_status(self, status_id ,tag_list):#used for tagging 
-        if tag_list is not None and len(tag_list) > 0:#different tags added comes here
+    def tag_status(self, status_id ,tag_list):
+        if tag_list is not None and len(tag_list) > 0:
             status = self._dao.get(status_id)
             if status is None:
                 raise error.StatusDoesNotExist()
